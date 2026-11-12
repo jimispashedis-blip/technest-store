@@ -1,0 +1,55 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "Νέα συλλογή · 2025",
+        "heading": "Το setup σου",
+        "heading_highlight": "αξίζει το επόμενο level.",
+        "text": "<p>Πληκτρολόγια, ποντίκια, headsets και monitors επιλεγμένα ένα-ένα. Γρήγορη αποστολή σε όλη την Ελλάδα και εγγύηση 2 ετών.</p>",
+        "cta_label": "Δες τα drops",
+        "cta_link": "shopify://collections/all",
+        "cta2_label": "Πληκτρολόγια",
+        "cta2_link": "shopify://collections/keyboards"
+      },
+      "blocks": {
+        "stat-1": { "type": "stat", "settings": { "value": "24h", "label": "Αποστολή" } },
+        "stat-2": { "type": "stat", "settings": { "value": "2 έτη", "label": "Εγγύηση" } },
+        "stat-3": { "type": "stat", "settings": { "value": "4.9/5", "label": "1.200+ αξιολογήσεις" } }
+      },
+      "block_order": ["stat-1", "stat-2", "stat-3"]
+    },
+    "features": {
+      "type": "features-bar",
+      "blocks": {
+        "f-1": { "type": "feature", "settings": { "icon": "truck", "title": "Δωρεάν αποστολή", "text": "Άνω των 60€" } },
+        "f-2": { "type": "feature", "settings": { "icon": "bolt", "title": "Αποστολή 24h", "text": "Παραγγελίες έως 15:00" } },
+        "f-3": { "type": "feature", "settings": { "icon": "shield", "title": "Εγγύηση 2 ετών", "text": "Επίσημος αντιπρόσωπος" } },
+        "f-4": { "type": "feature", "settings": { "icon": "return", "title": "Επιστροφή 14 ημερών", "text": "Χωρίς ερωτήσεις" } }
+      },
+      "block_order": ["f-1", "f-2", "f-3", "f-4"]
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Best sellers",
+        "title": "Τα αγαπημένα της κοινότητας",
+        "subtitle": "Τα προϊόντα που ζητάνε περισσότεροι παίκτες.",
+        "products_to_show": 8,
+        "columns": 4
+      }
+    },
+    "collections": {
+      "type": "collection-list",
+      "settings": { "eyebrow": "Κατηγορίες", "title": "Βρες το gear σου", "columns": 3 },
+      "blocks": {
+        "c-1": { "type": "collection", "settings": { "title": "Πληκτρολόγια", "subtitle": "Mechanical & optical" } },
+        "c-2": { "type": "collection", "settings": { "title": "Ποντίκια", "subtitle": "Ultra light" } },
+        "c-3": { "type": "collection", "settings": { "title": "Headsets", "subtitle": "Ήχος & mic" } }
+      },
+      "block_order": ["c-1", "c-2", "c-3"]
+    },
+    "newsletter": { "type": "newsletter" }
+  },
+  "order": ["hero", "features", "featured", "collections", "newsletter"]
+}

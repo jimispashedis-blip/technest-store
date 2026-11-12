@@ -1,0 +1,50 @@
+<div class="page-width section page-narrow">
+  <h1>{{ 'customer.account.addresses' | t }}</h1>
+  <p><a href="{{ routes.account_url }}">← Πίσω στον λογαριασμό</a></p>
+
+  {%- if customer.addresses.size > 0 -%}
+    <div class="product-grid" style="--columns:2;margin-bottom:2rem;">
+      {%- for address in customer.addresses -%}
+        <div class="account-card">
+          {%- if address == customer.default_address -%}<span class="badge">Προεπιλεγμένη</span>{%- endif -%}
+          <p style="margin-top:.75rem;">{{ address | format_address }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    <p style="color:var(--color-muted);">Δεν έχεις αποθηκευμένη διεύθυνση.</p>
+  {%- endif -%}
+
+  <h2 style="font-size:1.15rem;">Νέα διεύθυνση</h2>
+  {%- form 'customer_address', customer.new_address -%}
+    <div class="form-field">
+      <label for="AddressFirstName">Όνομα</label>
+      <input type="text" name="address[first_name]" id="AddressFirstName" autocomplete="given-name">
+    </div>
+    <div class="form-field">
+      <label for="AddressLastName">Επίθετο</label>
+      <input type="text" name="address[last_name]" id="AddressLastName" autocomplete="family-name">
+    </div>
+    <div class="form-field">
+      <label for="AddressAddress1">Διεύθυνση</label>
+      <input type="text" name="address[address1]" id="AddressAddress1" autocomplete="address-line1">
+    </div>
+    <div class="form-field">
+      <label for="AddressCity">Πόλη</label>
+      <input type="text" name="address[city]" id="AddressCity" autocomplete="address-level2">
+    </div>
+    <div class="form-field">
+      <label for="AddressZip">Τ.Κ.</label>
+      <input type="text" name="address[zip]" id="AddressZip" autocomplete="postal-code">
+    </div>
+    <div class="form-field">
+      <label for="AddressCountry">Χώρα</label>
+      <select name="address[country]" id="AddressCountry">{{ country_option_tags }}</select>
+    </div>
+    <div class="form-field">
+      <label for="AddressPhone">Τηλέφωνο</label>
+      <input type="tel" name="address[phone]" id="AddressPhone" autocomplete="tel">
+    </div>
+    <button class="btn" type="submit">Αποθήκευση</button>
+  {%- endform -%}
+</div>

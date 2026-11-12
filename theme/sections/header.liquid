@@ -1,0 +1,51 @@
+<header class="header">
+  <div class="page-width header__inner">
+    <button class="header__toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="HeaderNav" aria-label="{{ 'general.accessibility.menu' | t }}">
+      {% render 'icon', name: 'menu' %}
+    </button>
+
+    <a href="{{ routes.root_url }}" class="header__logo">
+      <span class="header__logo-mark" aria-hidden="true">TN</span>
+      <span>{{ settings.logo_text | default: shop.name }}</span>
+    </a>
+
+    <nav class="header__nav" id="HeaderNav" data-nav>
+      <ul class="header__menu">
+        {%- for link in section.settings.menu.links -%}
+          <li>
+            <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>{{ link.title }}</a>
+          </li>
+        {%- else -%}
+          <li><a href="{{ routes.all_products_collection_url }}">Όλα τα προϊόντα</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__action" href="{{ routes.search_url }}">
+        {% render 'icon', name: 'search' %}
+        <span class="label">{{ 'general.accessibility.search' | t }}</span>
+      </a>
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="header__action" href="{{ routes.account_url }}">
+          {% render 'icon', name: 'user' %}
+          <span class="label">{{ 'general.accessibility.account' | t }}</span>
+        </a>
+      {%- endif -%}
+      <a class="header__action" href="{{ routes.cart_url }}">
+        {% render 'icon', name: 'cart' %}
+        <span class="label">{{ 'general.accessibility.cart' | t }}</span>
+        <span class="cart-count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ]
+}
+{% endschema %}

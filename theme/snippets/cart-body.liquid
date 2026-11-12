@@ -1,0 +1,67 @@
+{%- comment -%}Renders cart contents. Params: context ('drawer' | 'page').{%- endcomment -%}
+<div data-cart-body>
+  {%- if cart.item_count == 0 -%}
+    <div class="empty-state">
+      <h2>{{ 'cart.general.empty' | t }}</h2>
+      <p>{{ 'cart.general.continue_below' | t | default: 'Ρίξε μια ματιά στα τελευταία drops.' }}</p>
+      <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+    </div>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" novalidate>
+      <ul class="cart__lines">
+        {%- for item in cart.items -%}
+          <li class="cart-line">
+            <a class="cart-line__media" href="{{ item.url }}">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 180 | image_tag: loading: 'lazy', alt: item.title }}
+              {%- endif -%}
+            </a>
+            <div class="cart-line__info">
+              <p class="cart-line__title"><a href="{{ item.url }}">{{ item.product.title }}</a></p>
+              {%- unless item.product.has_only_default_variant -%}
+                <p class="cart-line__variant">{{ item.variant.title }}</p>
+              {%- endunless -%}
+              <div class="quantity" data-quantity>
+                <button type="button" data-qty-step="-1" aria-label="Μείωση">−</button>
+                <input
+                  type="number"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  aria-label="{{ 'cart.general.quantity' | t }}"
+                  data-line-key="{{ item.key }}">
+                <button type="button" data-qty-step="1" aria-label="Αύξηση">+</button>
+              </div>
+              <button type="submit" name="update" class="cart-line__remove">{{ 'cart.general.remove' | t }}</button>
+            </div>
+            <div class="cart-line__price">
+              {{ item.final_line_price | money }}
+              {%- if item.original_line_price > item.final_line_price -%}
+                <div class="price__compare">{{ item.original_line_price | money }}</div>
+              {%- endif -%}
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      <div class="cart-summary" style="margin-top:1.5rem;">
+        <h2>{{ 'cart.general.subtotal' | t }}</h2>
+        <div class="cart-summary__row">
+          <span>{{ 'cart.general.subtotal' | t }}</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+          <p class="cart-summary__note">{{ 'cart.general.shipping_note' | t }}</p>
+        {%- endif -%}
+        <div class="cart-summary__row cart-summary__row--total">
+          <span>{{ 'cart.general.total' | t }}</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        <button type="submit" name="checkout" class="btn btn--full">{{ 'cart.general.checkout' | t }}</button>
+        {%- if settings.cart_note != blank -%}
+          <p class="cart-summary__note">{{ settings.cart_note }}</p>
+        {%- endif -%}
+      </div>
+    </form>
+  {%- endif -%}
+</div>

@@ -1,0 +1,98 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "TechNest Gaming",
+    "theme_version": "1.0.0",
+    "theme_author": "TechNest",
+    "theme_documentation_url": "https://github.com/jimispashedis-blip/technest-store",
+    "theme_support_url": "https://github.com/jimispashedis-blip/technest-store/issues"
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo" },
+      { "type": "text", "id": "logo_text", "label": "Logo text (fallback)", "default": "TechNest" },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "textarea", "id": "brand_tagline", "label": "Tagline", "default": "Gaming gear για παίκτες που δεν συμβιβάζονται." }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_bg", "label": "Background", "default": "#07080b" },
+      { "type": "color", "id": "color_surface", "label": "Surface", "default": "#0e1118" },
+      { "type": "color", "id": "color_text", "label": "Text", "default": "#e9eef7" },
+      { "type": "color", "id": "color_accent", "label": "Accent", "default": "#c6ff3d" },
+      { "type": "color", "id": "color_accent_2", "label": "Secondary accent", "default": "#8b5cf6" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "heading_font",
+        "label": "Heading font",
+        "options": [
+          { "value": "space", "label": "Space Grotesk" },
+          { "value": "inter", "label": "Inter" },
+          { "value": "system", "label": "System UI" }
+        ],
+        "default": "space"
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "label": "Body text size",
+        "min": 14,
+        "max": 19,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      }
+    ]
+  },
+  {
+    "name": "Product cards",
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_per_row",
+        "label": "Products per row (desktop)",
+        "min": 2,
+        "max": 4,
+        "step": 1,
+        "default": 4
+      },
+      { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": true },
+      { "type": "checkbox", "id": "show_quick_add", "label": "Show quick add button", "default": true }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      { "type": "checkbox", "id": "cart_drawer", "label": "Enable cart drawer", "default": true },
+      {
+        "type": "text",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold (EUR)",
+        "default": "60"
+      },
+      {
+        "type": "text",
+        "id": "cart_note",
+        "label": "Cart note",
+        "default": "Δωρεάν αποστολή για παραγγελίες άνω των 60€"
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      { "type": "url", "id": "social_instagram", "label": "Instagram" },
+      { "type": "url", "id": "social_tiktok", "label": "TikTok" },
+      { "type": "url", "id": "social_youtube", "label": "YouTube" },
+      { "type": "url", "id": "social_discord", "label": "Discord" }
+    ]
+  }
+]

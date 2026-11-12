@@ -1,0 +1,125 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Ετικέτες: {{ tags }}",
+      "page": "Σελίδα {{ page }}"
+    },
+    "accessibility": {
+      "skip_to_content": "Μετάβαση στο περιεχόμενο",
+      "close": "Κλείσιμο",
+      "menu": "Μενού",
+      "cart": "Καλάθι",
+      "search": "Αναζήτηση",
+      "account": "Λογαριασμός",
+      "previous": "Προηγούμενο",
+      "next": "Επόμενο"
+    },
+    "search": {
+      "placeholder": "Αναζήτηση προϊόντων, brands…",
+      "submit": "Αναζήτηση",
+      "results_for": "Αποτελέσματα για",
+      "no_results": "Δεν βρήκαμε αποτελέσματα. Δοκίμασε διαφορετικό όρο.",
+      "results_count": "{{ count }} αποτελέσματα"
+    },
+    "pagination": {
+      "label": "Σελιδοποίηση",
+      "page": "Σελίδα {{ number }}"
+    },
+    "newsletter": {
+      "email": "Email",
+      "submit": "Εγγραφή",
+      "success": "Ευχαριστούμε για την εγγραφή!"
+    },
+    "404": {
+      "title": "Χάθηκες στο respawn;",
+      "text": "Η σελίδα που ψάχνεις δεν υπάρχει ή μετακινήθηκε.",
+      "cta": "Επιστροφή στο κατάστημα"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Προσθήκη στο καλάθι",
+      "sold_out": "Εξαντλήθηκε",
+      "unavailable": "Μη διαθέσιμο",
+      "quantity": "Ποσότητα",
+      "vendor": "Κατασκευαστής",
+      "sku": "Κωδικός",
+      "in_stock": "Διαθέσιμο",
+      "out_of_stock": "Εξαντλημένο",
+      "on_sale": "Προσφορά",
+      "description": "Περιγραφή",
+      "quick_add": "Γρήγορη προσθήκη",
+      "from": "Από"
+    },
+    "grid": {
+      "empty": "Δεν υπάρχουν προϊόντα ακόμη."
+    }
+  },
+  "collections": {
+    "general": {
+      "no_products": "Δεν υπάρχουν προϊόντα σε αυτή τη συλλογή.",
+      "products_count": "{{ count }} προϊόντα",
+      "sort_by": "Ταξινόμηση",
+      "filter_by": "Φίλτρα"
+    },
+    "sorting": {
+      "manual": "Προτεινόμενα",
+      "best_selling": "Δημοφιλέστερα",
+      "title_ascending": "Όνομα Α–Ω",
+      "title_descending": "Όνομα Ω–Α",
+      "price_ascending": "Τιμή: χαμηλή → υψηλή",
+      "price_descending": "Τιμή: υψηλή → χαμηλή",
+      "created_descending": "Νεότερα"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Το καλάθι σου",
+      "empty": "Το καλάθι σου είναι άδειο.",
+      "continue_shopping": "Συνέχισε τις αγορές",
+      "subtotal": "Υποσύνολο",
+      "total": "Σύνολο",
+      "checkout": "Ολοκλήρωση παραγγελίας",
+      "remove": "Αφαίρεση",
+      "quantity": "Ποσότητα",
+      "note": "Σημείωση παραγγελίας",
+      "shipping_note": "Τα μεταφορικά υπολογίζονται στο checkout.",
+      "continue_below": "Ρίξε μια ματιά στα τελευταία drops."
+    }
+  },
+  "customer": {
+    "login": {
+      "title": "Σύνδεση",
+      "email": "Email",
+      "password": "Κωδικός",
+      "submit": "Σύνδεση",
+      "forgot": "Ξέχασες τον κωδικό;",
+      "create": "Δημιουργία λογαριασμού"
+    },
+    "register": {
+      "title": "Δημιουργία λογαριασμού",
+      "first_name": "Όνομα",
+      "last_name": "Επίθετο",
+      "submit": "Εγγραφή"
+    },
+    "account": {
+      "title": "Ο λογαριασμός μου",
+      "orders": "Παραγγελίες",
+      "no_orders": "Δεν έχεις παραγγελίες ακόμη.",
+      "logout": "Αποσύνδεση",
+      "addresses": "Διευθύνσεις"
+    },
+    "orders": {
+      "order_number": "Παραγγελία",
+      "date": "Ημερομηνία",
+      "total": "Σύνολο",
+      "status": "Κατάσταση"
+    }
+  },
+  "layout": {
+    "cart": {
+      "title": "Καλάθι",
+      "count": "{{ count }} προϊόντα"
+    }
+  }
+}

@@ -1,0 +1,115 @@
+<div class="page-width">
+  {% render 'breadcrumbs' %}
+</div>
+
+<div class="collection-hero">
+  <div class="page-width">
+    <h1 class="collection-hero__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <div class="collection-hero__description rte">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+</div>
+
+<div class="page-width">
+  {%- paginate collection.products by section.settings.products_per_page -%}
+    <div class="collection-toolbar">
+      <span>{{ 'collections.general.products_count' | t: count: collection.products_count }}</span>
+
+      <form id="SortForm" method="get">
+        <label for="SortBy">{{ 'collections.general.sort_by' | t }}</label>
+        <select id="SortBy" name="sort_by" onchange="this.form.submit()">
+          {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value }}" {% if option.value == current_sort %}selected{% endif %}>{{ option.name }}</option>
+          {%- endfor -%}
+        </select>
+        {%- for filter in collection.filters -%}
+          {%- for value in filter.active_values -%}
+            <input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">
+          {%- endfor -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value -%}<input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value }}">{%- endif -%}
+            {%- if filter.max_value.value -%}<input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value }}">{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </form>
+    </div>
+
+    {%- if collection.filters.size > 0 -%}
+      <form id="FilterForm" method="get" style="margin-bottom:1.5rem;">
+        <input type="hidden" name="sort_by" value="{{ collection.sort_by | default: collection.default_sort_by }}">
+        <div class="chips">
+          {%- for filter in collection.filters -%}
+            {%- if filter.type == 'list' -%}
+              {%- for value in filter.values -%}
+                <label class="chip" style="cursor:pointer;">
+                  <input
+                    type="checkbox"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                    style="margin-right:.35rem;accent-color:var(--color-accent);"
+                    onchange="this.form.submit()">
+                  {{ value.label }} ({{ value.count }})
+                </label>
+              {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- for filter in collection.filters -%}
+            {%- if filter.active_values.size > 0 -%}
+              <a class="chip" href="{{ filter.url_to_remove }}">Καθαρισμός ×</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </form>
+    {%- endif -%}
+
+    {%- if collection.products.size > 0 -%}
+      <div class="product-grid" style="--columns: {{ settings.products_per_row }};">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product, show_vendor: settings.show_vendor %}
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav aria-label="{{ 'general.pagination.label' | t }}">
+          <ul class="pagination" style="list-style:none;">
+            {%- if paginate.previous -%}
+              <li><a href="{{ paginate.previous.url }}" rel="prev">←</a></li>
+            {%- endif -%}
+            {%- for part in paginate.parts -%}
+              <li>
+                {%- if part.is_link -%}
+                  <a href="{{ part.url }}">{{ part.title }}</a>
+                {%- elsif part.title == paginate.current_page -%}
+                  <span aria-current="page">{{ part.title }}</span>
+                {%- else -%}
+                  <span>{{ part.title }}</span>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+            {%- if paginate.next -%}
+              <li><a href="{{ paginate.next.url }}" rel="next">→</a></li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="empty-state">
+        <h2>{{ 'collections.general.no_products' | t }}</h2>
+        <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "range", "id": "products_per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 }
+  ]
+}
+{% endschema %}

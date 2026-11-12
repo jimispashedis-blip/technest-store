@@ -1,0 +1,19 @@
+{
+  "current": {
+    "logo_text": "TechNest",
+    "brand_tagline": "Gaming gear για παίκτες που δεν συμβιβάζονται.",
+    "color_bg": "#07080b",
+    "color_surface": "#0e1118",
+    "color_text": "#e9eef7",
+    "color_accent": "#c6ff3d",
+    "color_accent_2": "#8b5cf6",
+    "heading_font": "space",
+    "body_scale": 16,
+    "products_per_row": 4,
+    "show_vendor": true,
+    "show_quick_add": true,
+    "cart_drawer": true,
+    "free_shipping_threshold": "60",
+    "cart_note": "Δωρεάν αποστολή για παραγγελίες άνω των 60€"
+  }
+}

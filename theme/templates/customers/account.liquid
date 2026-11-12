@@ -1,0 +1,44 @@
+<div class="page-width section">
+  <div class="section__head">
+    <div>
+      <p class="section__eyebrow">{{ 'customer.account.title' | t }}</p>
+      <h1 class="section__title">Γεια σου, {{ customer.first_name | default: 'gamer' }}.</h1>
+    </div>
+    <div style="display:flex;gap:.5rem;">
+      <a class="btn btn--secondary" href="{{ routes.account_addresses_url }}">{{ 'customer.account.addresses' | t }}</a>
+      <a class="btn btn--ghost" href="{{ routes.account_logout_url }}">{{ 'customer.account.logout' | t }}</a>
+    </div>
+  </div>
+
+  <h2 style="font-size:1.2rem;">{{ 'customer.account.orders' | t }}</h2>
+
+  {%- if customer.orders.size > 0 -%}
+    <div class="account-card table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ 'customer.orders.order_number' | t }}</th>
+            <th>{{ 'customer.orders.date' | t }}</th>
+            <th>{{ 'customer.orders.status' | t }}</th>
+            <th>{{ 'customer.orders.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for order in customer.orders -%}
+            <tr>
+              <td><a href="{{ order.customer_url }}" style="color:var(--color-accent);">{{ order.name }}</a></td>
+              <td>{{ order.created_at | date: '%d/%m/%Y' }}</td>
+              <td>{{ order.fulfillment_status_label }}</td>
+              <td>{{ order.total_price | money }}</td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  {%- else -%}
+    <div class="empty-state">
+      <p>{{ 'customer.account.no_orders' | t }}</p>
+      <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+    </div>
+  {%- endif -%}
+</div>

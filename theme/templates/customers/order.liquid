@@ -1,0 +1,32 @@
+<div class="page-width section page-narrow">
+  <p class="section__eyebrow">{{ 'customer.orders.order_number' | t }}</p>
+  <h1>{{ order.name }}</h1>
+  <p style="color:var(--color-muted);">{{ order.created_at | date: '%d/%m/%Y' }} · {{ order.financial_status_label }} · {{ order.fulfillment_status_label }}</p>
+
+  <div class="account-card table-wrap" style="margin-top:1.5rem;">
+    <table>
+      <thead>
+        <tr><th>Προϊόν</th><th>Ποσότητα</th><th>Τιμή</th></tr>
+      </thead>
+      <tbody>
+        {%- for line_item in order.line_items -%}
+          <tr>
+            <td>{{ line_item.title }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+    <div style="margin-top:1rem;">
+      <div class="cart-summary__row"><span>Υποσύνολο</span><span>{{ order.subtotal_price | money }}</span></div>
+      <div class="cart-summary__row"><span>Αποστολή</span><span>{{ order.shipping_price | money }}</span></div>
+      <div class="cart-summary__row cart-summary__row--total"><span>Σύνολο</span><span>{{ order.total_price | money }}</span></div>
+    </div>
+  </div>
+
+  <h2 style="font-size:1.15rem;margin-top:2rem;">Διεύθυνση αποστολής</h2>
+  <p style="color:var(--color-muted);">{{ order.shipping_address | format_address }}</p>
+
+  <p style="margin-top:2rem;"><a href="{{ routes.account_url }}">← {{ 'customer.account.title' | t }}</a></p>
+</div>
