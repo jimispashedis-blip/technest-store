@@ -1,0 +1,44 @@
+<section class="section section--tight">
+  <div class="page-width">
+    <div class="newsletter">
+      <div>
+        <p class="section__eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2>{{ section.settings.heading }}</h2>
+        <p>{{ section.settings.text }}</p>
+      </div>
+      <div>
+        {% form 'customer', class: 'newsletter__form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label class="visually-hidden" for="NewsletterEmail">{{ 'general.newsletter.email' | t }}</label>
+          <input
+            id="NewsletterEmail"
+            type="email"
+            name="contact[email]"
+            placeholder="to email σου"
+            autocomplete="email"
+            required
+            aria-label="{{ 'general.newsletter.email' | t }}">
+          <button class="btn" type="submit">{{ 'general.newsletter.submit' | t }}</button>
+          {%- if form.posted_successfully? -%}
+            <p class="form-message">{{ 'general.newsletter.success' | t }}</p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <p class="form-message" style="color: var(--color-danger);">Έλεγξε το email και δοκίμασε ξανά.</p>
+          {%- endif -%}
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "TechNest Insider" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Πρώτος στα drops, πρώτος στο game." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Early access σε limited drops, εκπτώσεις και reviews. Χωρίς spam." }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

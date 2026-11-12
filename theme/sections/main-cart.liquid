@@ -1,0 +1,9 @@
+<section class="cart page-width">
+  {% render 'breadcrumbs' %}
+  <h1>{{ 'cart.general.title' | t }}</h1>
+  {% render 'cart-body', context: 'page' %}
+</section>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}

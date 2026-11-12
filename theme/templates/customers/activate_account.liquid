@@ -1,0 +1,17 @@
+<div class="page-width section page-narrow" style="max-width:480px;">
+  <h1>Ενεργοποίηση λογαριασμού</h1>
+  {%- form 'activate_customer_password' -%}
+    {%- if form.errors -%}
+      <div class="form-errors">{{ form.errors | default_errors }}</div>
+    {%- endif -%}
+    <div class="form-field">
+      <label for="ActivatePassword">Νέος κωδικός</label>
+      <input type="password" name="customer[password]" id="ActivatePassword" autocomplete="new-password" required>
+    </div>
+    <div class="form-field">
+      <label for="ActivatePasswordConfirm">Επιβεβαίωση κωδικού</label>
+      <input type="password" name="customer[password_confirmation]" id="ActivatePasswordConfirm" autocomplete="new-password" required>
+    </div>
+    <button class="btn btn--full" type="submit">Ενεργοποίηση</button>
+  {%- endform -%}
+</div>

@@ -1,0 +1,84 @@
+<section class="hero">
+  <div class="page-width hero__grid">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="hero__badge">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h1 class="hero__title">
+        {{ section.settings.heading }}
+        {%- if section.settings.heading_highlight != blank -%}
+          <br><em>{{ section.settings.heading_highlight }}</em>
+        {%- endif -%}
+      </h1>
+      <div class="hero__text rte">{{ section.settings.text }}</div>
+      <div class="hero__actions">
+        {%- if section.settings.cta_link != blank -%}
+          <a class="btn" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+        {%- if section.settings.cta2_link != blank -%}
+          <a class="btn btn--secondary" href="{{ section.settings.cta2_link }}">{{ section.settings.cta2_label }}</a>
+        {%- endif -%}
+      </div>
+      <div class="hero__stats">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'stat' -%}
+            <div class="hero__stat" {{ block.shopify_attributes }}>
+              <strong>{{ block.settings.value }}</strong>
+              <span>{{ block.settings.label }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="hero__media{% if section.settings.image == blank %} hero__media--empty{% endif %}">
+      {%- if section.settings.image != blank -%}
+        {%- assign hero_img_alt = section.settings.image.alt | default: 'TechNest gaming setup' -%}
+        {{
+          section.settings.image
+          | image_url: width: 1200
+          | image_tag: widths: '600,900,1200', sizes: '(min-width: 900px) 45vw, 100vw', alt: hero_img_alt
+        }}
+      {%- else -%}
+        <span>Gaming setup εικόνα</span>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero banner",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Νέα συλλογή · 2025" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Το setup σου" },
+    { "type": "text", "id": "heading_highlight", "label": "Highlighted heading", "default": "αξίζει το επόμενο level." },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Πληκτρολόγια, ποντίκια, headsets και monitors επιλεγμένα ένα-ένα. Γρήγορη αποστολή σε όλη την Ελλάδα και εγγύηση 2 ετών.</p>" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "cta_label", "label": "Primary button label", "default": "Δες τα drops" },
+    { "type": "url", "id": "cta_link", "label": "Primary button link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button label", "default": "Πληκτρολόγια" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary button link" }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "4.9/5" },
+        { "type": "text", "id": "label", "label": "Label", "default": "1.200+ αξιολογήσεις" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero banner",
+      "blocks": [
+        { "type": "stat", "settings": { "value": "24h", "label": "Αποστολή" } },
+        { "type": "stat", "settings": { "value": "2 έτη", "label": "Εγγύηση" } },
+        { "type": "stat", "settings": { "value": "4.9/5", "label": "1.200+ αξιολογήσεις" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

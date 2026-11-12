@@ -1,0 +1,26 @@
+<section class="section">
+  <div class="page-width page-narrow">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="section__eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h2>{{ section.settings.heading }}</h2>
+    <div class="rte">{{ section.settings.text }}</div>
+    {%- if section.settings.cta_link != blank -%}
+      <p><a class="btn btn--secondary" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a></p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Γιατί TechNest;" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Δοκιμάζουμε κάθε προϊόν πριν το βάλουμε στο ράφι. Αν δεν παίζει καλά, δεν το πουλάμε.</p>" },
+    { "type": "text", "id": "cta_label", "label": "Button label" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Rich text" }]
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+# dependencies & builds
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+
+# env / secrets
+.env
+.env.local
+.env.*.local
+
+# Shopify CLI
+.shopify/
+theme/*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

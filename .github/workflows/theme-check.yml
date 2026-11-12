@@ -1,0 +1,30 @@
+name: Theme check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "theme/**"
+      - ".github/workflows/theme-check.yml"
+  pull_request:
+    paths:
+      - "theme/**"
+      - ".github/workflows/theme-check.yml"
+  workflow_dispatch:
+
+jobs:
+  theme-check:
+    name: shopify theme check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+
+      - name: Run theme check
+        run: shopify theme check --path ./theme --fail-level error

@@ -1,0 +1,17 @@
+{%- comment -%}Injects merchant color settings as CSS custom properties.{%- endcomment -%}
+<style>
+  :root {
+    --color-bg: {{ settings.color_bg }};
+    --color-surface: {{ settings.color_surface }};
+    --color-text: {{ settings.color_text }};
+    --color-accent: {{ settings.color_accent }};
+    --color-accent-2: {{ settings.color_accent_2 }};
+    --font-body-size: {{ settings.body_scale }}px;
+  }
+  body { font-size: var(--font-body-size); }
+  {%- if settings.heading_font == 'inter' -%}
+    :root { --font-display: var(--font-body); }
+  {%- elsif settings.heading_font == 'system' -%}
+    :root { --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  {%- endif -%}
+</style>

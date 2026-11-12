@@ -1,0 +1,51 @@
+<div class="page-width section page-narrow" style="max-width:480px;">
+  <p class="section__eyebrow">{{ shop.name }}</p>
+  <h1>{{ 'customer.login.title' | t }}</h1>
+
+  {%- form 'customer_login' -%}
+    {%- if form.errors -%}
+      <div class="form-errors">{{ form.errors | default_errors }}</div>
+    {%- endif -%}
+
+    <div class="form-field">
+      <label for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+      <input type="email" name="customer[email]" id="CustomerEmail" autocomplete="email" required>
+    </div>
+    <div class="form-field">
+      <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+      <input type="password" name="customer[password]" id="CustomerPassword" autocomplete="current-password" required>
+    </div>
+
+    <button class="btn btn--full" type="submit">{{ 'customer.login.submit' | t }}</button>
+  {%- endform -%}
+
+  <p style="margin-top:1.25rem;">
+    <a href="#RecoverPassword">{{ 'customer.login.forgot' | t }}</a> ·
+    <a href="{{ routes.account_register_url }}">{{ 'customer.login.create' | t }}</a>
+  </p>
+
+  {%- if shop.checkout.guest_login -%}
+    <hr style="border-color:var(--color-border);margin:1.5rem 0;">
+    <h2 style="font-size:1.1rem;">Συνέχεια ως επισκέπτης</h2>
+    {%- form 'guest_login' -%}
+      <button class="btn btn--secondary btn--full" type="submit">Συνέχεια ως επισκέπτης</button>
+    {%- endform -%}
+  {%- endif -%}
+
+  <div id="RecoverPassword" style="margin-top:2.5rem;border-top:1px solid var(--color-border);padding-top:1.5rem;">
+    <h2 style="font-size:1.1rem;">Επαναφορά κωδικού</h2>
+    {%- form 'recover_customer_password' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-message">Σου στείλαμε email με οδηγίες.</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <div class="form-errors">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="form-field">
+        <label for="RecoverEmail">Email</label>
+        <input type="email" name="email" id="RecoverEmail" autocomplete="email" required>
+      </div>
+      <button class="btn btn--secondary" type="submit">Αποστολή link</button>
+    {%- endform -%}
+  </div>
+</div>

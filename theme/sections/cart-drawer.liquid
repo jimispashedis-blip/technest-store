@@ -1,0 +1,17 @@
+<div class="cart-drawer" data-cart-drawer hidden aria-label="{{ 'layout.cart.title' | t }}" role="dialog" aria-modal="true">
+  <div class="cart-drawer__overlay" data-cart-overlay></div>
+  <div class="cart-drawer__panel">
+    <div class="cart-drawer__head">
+      <h2>{{ 'layout.cart.title' | t }} <span style="color:var(--color-muted);font-size:.85rem;">({{ cart.item_count }})</span></h2>
+      <button class="cart-drawer__close" type="button" data-cart-close aria-label="{{ 'general.accessibility.close' | t }}">×</button>
+    </div>
+    <div class="cart-drawer__body">
+      {% render 'cart-body', context: 'drawer' %}
+    </div>
+    <a class="btn btn--full" href="{{ routes.cart_url }}" style="margin-top:1rem;">{{ 'cart.general.title' | t }}</a>
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Cart drawer" }
+{% endschema %}

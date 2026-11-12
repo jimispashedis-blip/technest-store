@@ -1,0 +1,31 @@
+<div class="page-width section">
+  <div class="section__head">
+    <div>
+      <p class="section__eyebrow">Κατηγορίες</p>
+      <h1 class="section__title">Όλες οι συλλογές</h1>
+    </div>
+  </div>
+  <div class="product-grid" style="--columns: 3;">
+    {%- for collection in collections -%}
+      {%- unless collection.handle == 'frontpage' -%}
+        <a class="product-card" href="{{ collection.url }}">
+          <div class="product-card__media">
+            {%- if collection.featured_image -%}
+              {{ collection.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', alt: collection.title }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">{{ collection.title }}</h3>
+            <p class="product-card__vendor">{{ collection.all_products_count }} προϊόντα</p>
+          </div>
+        </a>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Collections list" }
+{% endschema %}

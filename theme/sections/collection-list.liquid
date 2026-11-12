@@ -1,0 +1,63 @@
+<section class="section">
+  <div class="page-width">
+    <div class="section__head">
+      <div>
+        <p class="section__eyebrow">{{ section.settings.eyebrow }}</p>
+        <h2 class="section__title">{{ section.settings.title }}</h2>
+      </div>
+    </div>
+    <div class="product-grid" style="--columns: {{ section.settings.columns }};">
+      {%- for block in section.blocks -%}
+        {%- assign col = collections[block.settings.collection] -%}
+        <a class="product-card" href="{{ col.url | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+          <div class="product-card__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.title }}
+            {%- elsif col.image -%}
+              {{ col.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: col.title }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__title">{{ block.settings.title | default: col.title }}</h3>
+            <p class="product-card__vendor">{{ block.settings.subtitle }}</p>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Κατηγορίες" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Βρες το gear σου" },
+    { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 4, "step": 1, "default": 3 }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "text", "id": "title", "label": "Title override" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Δες τη συλλογή" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

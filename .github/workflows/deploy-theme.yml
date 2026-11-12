@@ -1,0 +1,73 @@
+name: Deploy Shopify theme
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "theme/**"
+      - ".github/workflows/deploy-theme.yml"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Κάνε το theme live μετά το push"
+        type: boolean
+        default: false
+      theme_id:
+        description: "Theme ID (προαιρετικό, αλλιώς χρησιμοποιεί το repo variable SHOPIFY_THEME_ID)"
+        required: false
+
+concurrency:
+  group: shopify-theme-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Push theme to Shopify
+    runs-on: ubuntu-latest
+    environment: shopify
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+
+      - name: Validate theme
+        run: shopify theme check --path ./theme --fail-level error
+
+      - name: Push theme
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_STORE: ${{ vars.SHOPIFY_STORE }}
+          SHOPIFY_THEME_ID: ${{ github.event.inputs.theme_id || vars.SHOPIFY_THEME_ID }}
+          PUBLISH: ${{ github.event_name == 'push' || github.event.inputs.publish == 'true' }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SHOPIFY_CLI_THEME_TOKEN:-}" ]; then
+            echo "::error::Λείπει το secret SHOPIFY_CLI_THEME_TOKEN. Δες docs/GITHUB-ACTIONS.md"
+            exit 1
+          fi
+          if [ -z "${SHOPIFY_STORE:-}" ]; then
+            echo "::error::Λείπει το variable SHOPIFY_STORE (π.χ. technest-gaming.myshopify.com)"
+            exit 1
+          fi
+
+          ARGS=(--path ./theme --store "$SHOPIFY_STORE" --password "$SHOPIFY_CLI_THEME_TOKEN")
+
+          if [ -n "${SHOPIFY_THEME_ID:-}" ]; then
+            ARGS+=(--theme "$SHOPIFY_THEME_ID")
+          else
+            # Πρώτο deploy: ανέβασμα ως νέο (unpublished) theme
+            ARGS+=(--unpublished --theme "TechNest CI $GITHUB_RUN_NUMBER")
+          fi
+
+          if [ "${PUBLISH:-false}" = "true" ]; then
+            ARGS+=(--publish)
+          else
+            echo "ℹ️  Preview deploy (δεν γίνεται publish)."
+          fi
+
+          shopify theme push "${ARGS[@]}"

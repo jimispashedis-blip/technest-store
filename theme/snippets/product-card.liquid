@@ -1,0 +1,65 @@
+{%- comment -%}
+  Usage: {% render 'product-card', product: product, show_vendor: settings.show_vendor %}
+{%- endcomment -%}
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price_max > product.price_min
+    assign on_sale = true
+  endif
+  assign alt_text = product.title
+  if product.featured_media.alt != blank
+    assign alt_text = product.featured_media.alt
+  endif
+-%}
+<article class="product-card" data-reveal>
+  <a class="product-card__media" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+    <div class="product-card__badges">
+      {%- if product.available == false -%}
+        <span class="badge badge--soldout">{{ 'products.product.sold_out' | t }}</span>
+      {%- elsif on_sale -%}
+        <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>
+      {%- endif -%}
+      {%- for tag in product.tags -%}
+        {%- if tag contains 'badge:' -%}
+          <span class="badge">{{ tag | remove: 'badge:' | strip }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if product.featured_media -%}
+      {{
+        product.featured_media
+        | image_url: width: 700
+        | image_tag:
+          loading: 'lazy',
+          widths: '260,400,560,700',
+          sizes: '(min-width: 1100px) 25vw, (min-width: 640px) 33vw, 50vw',
+          alt: alt_text
+      }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {%- endif -%}
+  </a>
+
+  <div class="product-card__body">
+    {%- if show_vendor and product.vendor != blank -%}
+      <p class="product-card__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+    <h3 class="product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></h3>
+    <div class="product-card__footer">
+      {% render 'price', product: product %}
+      {%- if settings.show_quick_add and product.available -%}
+        {%- if product.has_only_default_variant -%}
+          <form action="{{ routes.cart_add_url }}" method="post" accept-charset="UTF-8" data-quick-add>
+            <input type="hidden" name="form_type" value="product">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="product-card__quick">{{ 'products.product.quick_add' | t }}</button>
+          </form>
+        {%- else -%}
+          <a class="product-card__quick" href="{{ product.url }}">{{ 'products.product.quick_add' | t }}</a>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</article>

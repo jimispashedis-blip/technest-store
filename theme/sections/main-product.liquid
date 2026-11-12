@@ -1,0 +1,183 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+-%}
+
+<div class="page-width">
+  {% render 'breadcrumbs' %}
+
+  <div class="product">
+    <div class="product__gallery">
+      <div class="product__main-image" data-gallery-main>
+        {%- if product.featured_media -%}
+          {%- assign hero_alt = product.featured_media.alt | default: product.title -%}
+          {{
+            product.featured_media
+            | image_url: width: 1200
+            | image_tag:
+              loading: 'eager',
+              fetchpriority: 'high',
+              widths: '500,800,1200',
+              sizes: '(min-width: 900px) 50vw, 100vw',
+              alt: hero_alt
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      {%- if product.media.size > 1 -%}
+        <div class="product__thumbs">
+          {%- for media in product.media limit: 8 -%}
+            <button
+              type="button"
+              class="product__thumb"
+              data-gallery-thumb
+              data-src="{{ media | image_url: width: 1200 }}"
+              data-srcset="{{ media | image_url: width: 1200 }} 1200w, {{ media | image_url: width: 600 }} 600w"
+              aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-label="Εικόνα {{ forloop.index }}">
+              {{ media | image_url: width: 180 | image_tag: loading: 'lazy', alt: product.title }}
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="product__info">
+      {%- if product.vendor != blank -%}
+        <p class="product__vendor">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h1 class="product__title">{{ product.title }}</h1>
+      <div class="product__price">
+        {% render 'price', product: product, size: 'lg' %}
+      </div>
+
+      <div class="stock{% unless current_variant.available %} stock--out{% endunless %}">
+        {%- if current_variant.available -%}
+          {{ 'products.product.in_stock' | t }}
+        {%- else -%}
+          {{ 'products.product.out_of_stock' | t }}
+        {%- endif -%}
+      </div>
+
+      {% form 'product', product, class: 'product-form', id: 'ProductForm' %}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+        {%- unless product.has_only_default_variant -%}
+          <div class="product__form">
+            {%- for option in product.options_with_values -%}
+              <div class="option-group">
+                <label class="option-group__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+                <div class="select-wrap">
+                  <select
+                    id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                    name="options[{{ option.name | escape }}]"
+                    data-variant-option>
+                    {%- for value in option.values -%}
+                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+
+        <div class="product__form">
+          <div>
+            <span class="option-group__label">{{ 'products.product.quantity' | t }}</span>
+            <div class="quantity" data-quantity>
+              <button type="button" data-qty-step="-1" aria-label="Μείωση">−</button>
+              <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="{{ 'products.product.quantity' | t }}">
+              <button type="button" data-qty-step="1" aria-label="Αύξηση">+</button>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            name="add"
+            class="btn btn--full"
+            {% unless current_variant.available %}disabled{% endunless %}>
+            {%- if current_variant.available -%}
+              {{ 'products.product.add_to_cart' | t }}
+            {%- else -%}
+              {{ 'products.product.sold_out' | t }}
+            {%- endif -%}
+          </button>
+
+          {%- if section.settings.show_dynamic_checkout and current_variant.available -%}
+            {{ form | payment_button }}
+          {%- endif -%}
+        </div>
+      {% endform %}
+
+      <div class="product__meta">
+        {%- if current_variant.sku != blank -%}
+          <div>{{ 'products.product.sku' | t }}: <span>{{ current_variant.sku }}</span></div>
+        {%- endif -%}
+        <div>Αποστολή: <span>1–3 εργάσιμες</span></div>
+        <div>Εγγύηση: <span>2 έτη</span></div>
+        <div>Επιστροφή: <span>14 ημέρες</span></div>
+      </div>
+
+      {%- if product.description != blank -%}
+        <div class="product__description rte">
+          <h2>{{ 'products.product.description' | t }}</h2>
+          {{ product.description }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.show_related -%}
+    {%- assign related = product.collections.first -%}
+    {%- if related.products.size > 1 -%}
+      <section class="section">
+        <div class="section__head">
+          <div>
+            <p class="section__eyebrow">Πρόταση</p>
+            <h2 class="section__title">Πάει καλά με</h2>
+          </div>
+          <a class="link-arrow" href="{{ related.url }}">Όλη η συλλογή</a>
+        </div>
+        <div class="product-grid" style="--columns: 4;">
+          {%- assign shown = 0 -%}
+          {%- for p in related.products -%}
+            {%- if p.id != product.id and shown < 4 -%}
+              {% render 'product-card', product: p, show_vendor: settings.show_vendor %}
+              {%- assign shown = shown | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "description": {{ product.description | strip_html | truncate: 400 | json }},
+    "brand": { "@type": "Brand", "name": {{ product.vendor | default: shop.name | json }} },
+    {% if product.featured_media %}"image": {{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }},{% endif %}
+    "offers": {
+      "@type": "Offer",
+      "price": {{ current_variant.price | divided_by: 100.0 | json }},
+      "priceCurrency": {{ cart.currency.iso_code | json }},
+      "availability": "https://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+      "url": {{ request.origin | append: product.url | json }}
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button", "default": false },
+    { "type": "checkbox", "id": "show_related", "label": "Show related products", "default": true }
+  ]
+}
+{% endschema %}

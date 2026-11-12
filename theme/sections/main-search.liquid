@@ -1,0 +1,50 @@
+<div class="page-width section">
+  <div class="section__head">
+    <div>
+      <p class="section__eyebrow">{{ 'general.search.submit' | t }}</p>
+      <h1 class="section__title">
+        {%- if search.performed -%}
+          {{ 'general.search.results_for' | t }} “{{ search.terms }}”
+        {%- else -%}
+          {{ 'general.search.submit' | t }}
+        {%- endif -%}
+      </h1>
+    </div>
+  </div>
+
+  <form action="{{ routes.search_url }}" method="get" role="search" style="display:flex;gap:.5rem;margin-bottom:2rem;flex-wrap:wrap;">
+    <input type="hidden" name="type" value="product">
+    <input
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ 'general.search.placeholder' | t }}"
+      aria-label="{{ 'general.search.placeholder' | t }}"
+      style="flex:1;min-width:220px;padding:.85rem 1rem;border-radius:999px;border:1px solid var(--color-border-strong);background:var(--color-surface-2);color:var(--color-text);font:inherit;">
+    <button class="btn" type="submit">{{ 'general.search.submit' | t }}</button>
+  </form>
+
+  {%- if search.performed -%}
+    {%- if search.results_count > 0 -%}
+      <p style="color:var(--color-muted);">{{ 'general.search.results_count' | t: count: search.results_count }}</p>
+      {%- paginate search.results by 24 -%}
+        <div class="product-grid" style="--columns: {{ settings.products_per_row }};">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item, show_vendor: settings.show_vendor %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endpaginate -%}
+    {%- else -%}
+      <div class="empty-state">
+        <h2>{{ 'general.search.no_results' | t }}</h2>
+        <a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.general.continue_shopping' | t }}</a>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Search results" }
+{% endschema %}

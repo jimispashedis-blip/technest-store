@@ -1,0 +1,21 @@
+<nav class="breadcrumbs page-width" aria-label="Breadcrumb">
+  <a href="{{ routes.root_url }}">Αρχική</a>
+  <span aria-hidden="true">/</span>
+  {%- if template.name == 'collection' -%}
+    <span>{{ collection.title }}</span>
+  {%- elsif template.name == 'product' -%}
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title }}</a>
+      <span aria-hidden="true">/</span>
+    {%- endif -%}
+    <span>{{ product.title }}</span>
+  {%- elsif template.name == 'page' -%}
+    <span>{{ page.title }}</span>
+  {%- elsif template.name == 'cart' -%}
+    <span>{{ 'cart.general.title' | t }}</span>
+  {%- elsif template.name == 'search' -%}
+    <span>{{ 'general.search.submit' | t }}</span>
+  {%- else -%}
+    <span>{{ page_title }}</span>
+  {%- endif -%}
+</nav>

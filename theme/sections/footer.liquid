@@ -1,0 +1,85 @@
+<footer class="footer">
+  <div class="page-width footer__grid">
+    <div>
+      <a href="{{ routes.root_url }}" class="header__logo" style="margin-bottom:1rem;">
+        <span class="header__logo-mark" aria-hidden="true">TN</span>
+        <span>{{ settings.logo_text | default: shop.name }}</span>
+      </a>
+      <p class="footer__about">{{ section.settings.about_text }}</p>
+      <div class="payment-icons" aria-hidden="true">
+        <svg viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="4" fill="#1b2130"/><path d="M6 15h5V9H6zM13 15h4v-4h-4z" fill="#97a3b6"/></svg>
+        <svg viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="4" fill="#1b2130"/><circle cx="15" cy="12" r="5" fill="#97a3b6"/><circle cx="23" cy="12" r="5" fill="#c6ff3d" opacity=".7"/></svg>
+        <svg viewBox="0 0 38 24" fill="none"><rect width="38" height="24" rx="4" fill="#1b2130"/><path d="M8 15h6l1-6h-6z" fill="#97a3b6"/><circle cx="26" cy="12" r="4" fill="#c6ff3d"/></svg>
+      </div>
+    </div>
+
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'menu' -%}
+          <div {{ block.shopify_attributes }}>
+            <h3>{{ block.settings.title }}</h3>
+            <ul>
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- when 'text' -%}
+          <div {{ block.shopify_attributes }}>
+            <h3>{{ block.settings.title }}</h3>
+            <p class="footer__about">{{ block.settings.text }}</p>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="page-width footer__bottom">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. Όλα τα δικαιώματα διατηρούνται.</span>
+    <span>
+      {%- if shop.privacy_policy -%}<a href="{{ shop.privacy_policy.url }}">Απόρρητο</a> · {% endif -%}
+      {%- if shop.refund_policy -%}<a href="{{ shop.refund_policy.url }}">Επιστροφές</a> · {% endif -%}
+      {%- if shop.terms_of_service -%}<a href="{{ shop.terms_of_service.url }}">Όροι</a>{% endif -%}
+    </span>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About text",
+      "default": "Το TechNest είναι ελληνικό κατάστημα gaming gear. Επιλεγμένα προϊόντα, γρήγορη παράδοση, πραγματική υποστήριξη."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Κατάστημα" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Υποστήριξη" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Δευτέρα–Παρασκευή 10:00–18:00\nsupport@technest.gr" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "menu" },
+        { "type": "text" }
+      ]
+    }
+  ]
+}
+{% endschema %}
